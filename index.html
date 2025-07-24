@@ -1,117 +1,79 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Banding Pemblokiran WhatsApp</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Banding WhatsApp</title>
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
     body {
-      margin: 0;
-      background: #0f0f0f;
+      background-color: #111;
       color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      font-family: sans-serif;
+      margin: 0;
       padding: 20px;
     }
-
-    .container {
-      max-width: 450px;
-      width: 100%;
-      background: #1e1e1e;
-      padding: 30px;
+    .box {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+      background: #1a1a1a;
       border-radius: 12px;
-      box-shadow: 0 0 20px #00ff8860;
-      text-align: center;
+      box-shadow: 0 0 10px #00ff88aa;
     }
-
-    h2 {
-      margin-top: 0;
-      color: #00ff88;
-    }
-
     input, textarea {
       width: 100%;
       padding: 12px;
-      margin: 10px 0 20px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      background: #222;
+      color: white;
       border: none;
       border-radius: 8px;
-      background: #2a2a2a;
-      color: #fff;
-      font-size: 15px;
     }
-
     button {
+      padding: 12px;
+      width: 100%;
       background: #00ff88;
-      border: none;
-      color: #000;
+      color: black;
       font-weight: bold;
-      padding: 12px 20px;
+      border: none;
       border-radius: 8px;
-      font-size: 16px;
       cursor: pointer;
-      transition: 0.2s;
     }
-
     button:hover {
       background: #00dd77;
     }
-
     .notif {
-      margin-top: 15px;
+      margin-top: 10px;
       color: #00ff88;
       font-weight: bold;
       display: none;
-    }
-
-    .footer {
-      margin-top: 25px;
-      font-size: 13px;
-      color: #777;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Banding WhatsApp Business</h2>
-    <p>Masukkan nomor WhatsApp kamu dan alasan banding</p>
-
-    <input type="text" id="nomor" placeholder="Contoh: +6281234567890" />
-    <textarea id="alasan" rows="4" placeholder="Saya tidak melakukan pelanggaran..."></textarea>
-
-    <button onclick="kirimEmail()">Kirim Banding</button>
-    <div class="notif" id="notif">✅ Email banding siap dikirim.</div>
-
-    <div class="footer">
-      Form ini bukan resmi WhatsApp. Hanya membantu mempermudah pengiriman banding ke <b>support@support.whatsapp.com</b>.
-    </div>
+  <div class="box">
+    <h2>Form Banding WhatsApp</h2>
+    <input type="text" id="nomor" placeholder="Nomor WhatsApp kamu (+62...)">
+    <textarea id="alasan" placeholder="Tulis alasan banding..." rows="5"></textarea>
+    <button onclick="kirim()">Kirim Banding</button>
+    <div id="notif" class="notif">✅ Email siap dikirim!</div>
   </div>
 
   <script>
-    function kirimEmail() {
-      const nomor = document.getElementById("nomor").value.trim();
-      const alasan = document.getElementById("alasan").value.trim();
-      const notif = document.getElementById("notif");
-
+    function kirim() {
+      const nomor = document.getElementById("nomor").value;
+      const alasan = document.getElementById("alasan").value;
       if (!nomor || !alasan) {
-        alert("Harap isi semua kolom.");
+        alert("Mohon isi semua kolom!");
         return;
       }
-
       const subject = encodeURIComponent("Banding Pemblokiran WhatsApp");
-      const body = encodeURIComponent(`Nomor: ${nomor}\n\nAlasan Banding:\n${alasan}`);
-      const mailto = `mailto:support@support.whatsapp.com?subject=${subject}&body=${body}`;
-      
-      window.location.href = mailto;
-
-      notif.style.display = "block";
+      const body = encodeURIComponent(`Nomor: ${nomor}\n\nAlasan:\n${alasan}`);
+      const link = `mailto:support@support.whatsapp.com?subject=${subject}&body=${body}`;
+      window.location.href = link;
+      document.getElementById("notif").style.display = "block";
     }
   </script>
 </body>
