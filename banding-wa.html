@@ -1,160 +1,117 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Form Banding WhatsApp</title>
+  <title>Banding Pemblokiran WhatsApp</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #111, #1c1c1c);
-      color: #fff;
-      padding: 30px;
-      text-align: center;
-    }
-    h2 {
-      color: #25d366;
-    }
-    input, button, select {
-      padding: 12px;
-      margin: 10px 0;
-      width: 90%;
-      max-width: 400px;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
-    }
-    input, select {
-      background: #2a2a2a;
-      color: white;
-    }
-    button {
-      background: #25d366;
-      color: white;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    button:hover {
-      transform: scale(1.05);
-    }
-    .tip {
-      font-size: 14px;
-      color: #aaa;
-      margin-top: 10px;
-    }
-    #preview {
-      background: #1f1f1f;
-      padding: 15px;
-      margin-top: 20px;
-      border-radius: 10px;
-      text-align: left;
-      white-space: pre-wrap;
-    }
-    .notif {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #25d366;
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 15px;
-      box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-      animation: fadein 0.3s ease;
-      z-index: 999;
     }
 
-    @keyframes fadein {
-      from {opacity: 0; transform: translateX(-50%) translateY(10px);}
-      to {opacity: 1; transform: translateX(-50%) translateY(0);}
+    body {
+      margin: 0;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 450px;
+      width: 100%;
+      background: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00ff8860;
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #00ff88;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 20px;
+      border: none;
+      border-radius: 8px;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    button {
+      background: #00ff88;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #00dd77;
+    }
+
+    .notif {
+      margin-top: 15px;
+      color: #00ff88;
+      font-weight: bold;
+      display: none;
+    }
+
+    .footer {
+      margin-top: 25px;
+      font-size: 13px;
+      color: #777;
     }
   </style>
 </head>
 <body>
-  <h2>Form Banding Akun WhatsApp</h2>
-  <p>Gunakan form ini untuk mengirim banding ke WhatsApp</p>
+  <div class="container">
+    <h2>Banding WhatsApp Business</h2>
+    <p>Masukkan nomor WhatsApp kamu dan alasan banding</p>
 
-  <input type="text" id="nama" placeholder="Nama Anda" required />
-  <input type="text" id="nomor" placeholder="Nomor WhatsApp (+62...)" required />
-  <select id="jenis">
-    <option value="business">WhatsApp Business</option>
-    <option value="biasa">WhatsApp Biasa</option>
-  </select>
-  <br>
-  <button onclick="previewEmail()">📧 Lihat Isi Email</button>
-  <button onclick="kirimEmail()">🚀 Kirim Banding</button>
+    <input type="text" id="nomor" placeholder="Contoh: +6281234567890" />
+    <textarea id="alasan" rows="4" placeholder="Saya tidak melakukan pelanggaran..."></textarea>
 
-  <div class="tip">
-    ⚠️ Gunakan email aktif agar balasan cepat diterima. Hindari mengirim spam.
+    <button onclick="kirimEmail()">Kirim Banding</button>
+    <div class="notif" id="notif">✅ Email banding siap dikirim.</div>
+
+    <div class="footer">
+      Form ini bukan resmi WhatsApp. Hanya membantu mempermudah pengiriman banding ke <b>support@support.whatsapp.com</b>.
+    </div>
   </div>
 
-  <div id="preview" style="display: none;"></div>
-
-  <!-- Notifikasi -->
-  <div id="notif" style="display: none;" class="notif">✅ Email siap dikirim!</div>
-
   <script>
-    function generateIsiEmail(nama, nomor, jenis) {
-      if (jenis === "business") {
-        return `Kepada Tim WhatsApp,
-
-Saya ingin mengajukan banding atas pemblokiran akun WhatsApp Business saya.
-
-Nomor saya: ${nomor}
-Saya meyakini bahwa saya tidak melakukan aktivitas yang melanggar Ketentuan Layanan WhatsApp Business. Jika ada kesalahan atau kesalahpahaman, mohon untuk dipertimbangkan kembali agar akun saya dapat dipulihkan.
-
-Saya sangat membutuhkan akun ini untuk keperluan komunikasi bisnis.
-
-Terima kasih atas perhatian dan bantuannya.
-
-Hormat saya,
-${nama}`;
-      } else {
-        return `Kepada Tim WhatsApp,
-
-Saya ingin mengajukan banding atas pemblokiran akun WhatsApp saya.
-
-Nomor saya: ${nomor}
-Saya meyakini bahwa saya tidak melakukan aktivitas yang melanggar Ketentuan Layanan WhatsApp. Mohon pertimbangan untuk memulihkan akun saya agar bisa digunakan kembali.
-
-Terima kasih atas perhatian dan bantuannya.
-
-Hormat saya,
-${nama}`;
-      }
-    }
-
-    function previewEmail() {
-      const nama = document.getElementById('nama').value;
-      const nomor = document.getElementById('nomor').value;
-      const jenis = document.getElementById('jenis').value;
-      if (!nama || !nomor) return alert("Mohon isi semua data!");
-
-      const isi = generateIsiEmail(nama, nomor, jenis);
-      document.getElementById('preview').style.display = 'block';
-      document.getElementById('preview').textContent = isi;
-    }
-
     function kirimEmail() {
-      const nama = document.getElementById('nama').value;
-      const nomor = document.getElementById('nomor').value;
-      const jenis = document.getElementById('jenis').value;
-      if (!nama || !nomor) return alert("Mohon isi semua data!");
+      const nomor = document.getElementById("nomor").value.trim();
+      const alasan = document.getElementById("alasan").value.trim();
+      const notif = document.getElementById("notif");
 
-      const subject = jenis === 'business' ? "Banding Pemblokiran Akun WhatsApp Business" : "Banding Pemblokiran Akun WhatsApp";
-      const body = generateIsiEmail(nama, nomor, jenis);
-      showNotif("✅ Email siap dikirim! Silakan kirim melalui aplikasi email Anda.");
-      window.location.href = `mailto:support@support.whatsapp.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    }
+      if (!nomor || !alasan) {
+        alert("Harap isi semua kolom.");
+        return;
+      }
 
-    function showNotif(text) {
-      const notif = document.getElementById('notif');
-      notif.textContent = text;
-      notif.style.display = 'block';
-      setTimeout(() => {
-        notif.style.display = 'none';
-      }, 3000);
+      const subject = encodeURIComponent("Banding Pemblokiran WhatsApp");
+      const body = encodeURIComponent(`Nomor: ${nomor}\n\nAlasan Banding:\n${alasan}`);
+      const mailto = `mailto:support@support.whatsapp.com?subject=${subject}&body=${body}`;
+      
+      window.location.href = mailto;
+
+      notif.style.display = "block";
     }
   </script>
 </body>
