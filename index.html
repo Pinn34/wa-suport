@@ -1,80 +1,140 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Banding WhatsApp</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Banding WhatsApp</title>
   <style>
     body {
-      background-color: #111;
-      color: #fff;
-      font-family: sans-serif;
       margin: 0;
       padding: 20px;
+      font-family: sans-serif;
+      background: #0c0c0c;
+      color: white;
+      text-align: center;
     }
+
     .box {
       max-width: 500px;
-      margin: auto;
+      margin: 0 auto 40px;
       padding: 20px;
       background: #1a1a1a;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #00ff88aa;
+      border-radius: 16px;
+      box-shadow: 0 0 15px #00ff88aa;
     }
+
     input, textarea {
       width: 100%;
       padding: 12px;
-      margin-top: 10px;
-      margin-bottom: 20px;
+      margin: 10px 0;
       background: #222;
-      color: white;
       border: none;
       border-radius: 8px;
+      color: white;
+      font-size: 16px;
     }
+
     button {
       padding: 12px;
       width: 100%;
       background: #00ff88;
       color: black;
       font-weight: bold;
+      font-size: 16px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      transition: background 0.3s;
     }
+
     button:hover {
       background: #00dd77;
     }
+
     .notif {
       margin-top: 10px;
       color: #00ff88;
       font-weight: bold;
       display: none;
-      text-align: center;
+    }
+
+    .moon-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px #00ff88aa;
+      margin: 20px auto;
+      object-fit: cover;
+    }
+
+    .admin-title {
+      font-size: 22px;
+      font-weight: bold;
+      text-shadow: 0 0 8px #00ff88;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .admin-btn {
+      padding: 10px 20px;
+      background: #00ff88;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 8px #00ff88;
+      transition: background 0.3s;
+    }
+
+    .admin-btn:hover {
+      background: #00dd77;
     }
   </style>
 </head>
 <body>
+
   <div class="box">
     <h2>Form Banding WhatsApp</h2>
-    <input type="text" id="nomor" placeholder="Nomor WhatsApp kamu (+62...)">
+    <input type="text" id="nomor" placeholder="Nomor WhatsApp kamu (+62...)" />
     <textarea id="alasan" placeholder="Tulis alasan banding..." rows="5"></textarea>
     <button onclick="kirim()">Kirim Banding</button>
     <div id="notif" class="notif">✅ Email siap dikirim!</div>
   </div>
 
+  <!-- Gambar hasil upload langsung dalam bentuk base64 -->
+  <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...<potongan>" alt="moon" class="moon-img" />
+
+  <div class="admin-title">All Info Pinzy</div>
+
+  <div class="btn-group">
+    <a href="https://t.me/pinzyadmin" target="_blank"><button class="admin-btn">Telegram Admin</button></a>
+    <a href="https://wa.me/6281234567890" target="_blank"><button class="admin-btn">Whatsapp Admin</button></a>
+    <a href="https://whatsapp.com/channel/0029Vb6GgmI35fLs8jWk9n3U" target="_blank"><button class="admin-btn">Channel Admin</button></a>
+  </div>
+
   <script>
     function kirim() {
-      const nomor = document.getElementById("nomor").value;
-      const alasan = document.getElementById("alasan").value;
+      const nomor = document.getElementById("nomor").value.trim();
+      const alasan = document.getElementById("alasan").value.trim();
       if (!nomor || !alasan) {
         alert("Mohon isi semua kolom!");
         return;
       }
       const subject = encodeURIComponent("Banding Pemblokiran WhatsApp");
       const body = encodeURIComponent(`Nomor: ${nomor}\n\nAlasan:\n${alasan}`);
-      const link = `mailto:support@support.whatsapp.com?subject=${subject}&body=${body}`;
-      window.location.href = link;
+      const mailtoLink = `mailto:support@support.whatsapp.com?subject=${subject}&body=${body}`;
+      window.location.href = mailtoLink;
       document.getElementById("notif").style.display = "block";
     }
   </script>
+
 </body>
 </html>
